@@ -1,16 +1,19 @@
 import pandas as pd
+import numpy as np
 
 
 def get_kickstarter():
-    df = pd.read_csv("/Users/cris/codeup-data-science/ds-methodologies-exercises/kickstarter_project/kickstarter.csv")
+    df = pd.read_csv("/Users/cris/codeup-data-science/kickstarter_project/kickstarter.csv")
     return df
 
-def clean_kickstarter():
-    df = df[["name","category","subcategory","location","status","goal","funded percentage","backers","duration"]]
-    df = df.location.fillna("Unknown, None", inplace=True)
-    df = df[["city","state-country"]] = df["location"].str.split(',', n=1, expand=True)
-    df = df.drop(["location"],axis=1)
-
-
-# def split_test_train():
-
+def recode_locations(kick):
+    kick[["city","origin"]] = kick["location"].str.split(', ', n=1, expand=True)
+    kick.origin.replace(to_replace="Argent",value="Argentina",inplace=True)
+    kick.origin.replace(to_replace="Mt",value="MT",inplace=True)
+    kick.origin.replace(to_replace="Dominican Re",value="Dominican Republic",inplace=True)
+    kick.origin.replace(to_replace="Kyoto, Japan",value="Japan",inplace=True)
+    kick.origin.replace(to_replace="Nakagyo Ward",value="Kyoto",inplace=True)
+    kick.origin.replace(to_replace="Kamigyo Ward",value="Kyoto",inplace=True)
+    kick.origin.replace(to_replace="Scotland, United Kingdom", value="Scotland", inplace=True)
+    kick.origin.replace(to_replace="Middleburg, MD", value="MD", inplace=True)
+    return kick
